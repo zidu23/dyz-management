@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.reimbursement.mapper.ReimbursementMapper">
+
+
+    <insert id="insetReimbursement">
+        insert into sys_reimbursement(ID, Username, Card, ReimbursementType, ReimbursementDate, ReimbursementTime,
+                                      ApprovalDate,
+                                      ApprovalTime, Reasons, Status)
+        values (#{ID}, #{Username}, #{Card}, #{ReimbursementType}, #{ReimbursementDate}, #{ReimbursementTime},
+                #{ApprovalDate},
+                #{ApprovalTime}, #{Reasons}, '0')
+    </insert>
+    <update id="settime">
+        update sys_reimbursement
+        set ReimbursementDate=#{reimbursementDate},
+            ReimbursementTime=#{reimbursementTime},
+            ApprovalDate=#{approvalDate},
+            ApprovalTime=#{approvalTime}where ID=#{idid}
+    </update>
+    <update id="updateReimbursement">
+        update sys_reimbursement
+        set ReimbursementType=#{reimbursementType},
+            ReimbursementDate=#{reimbursementDate},
+            ReimbursementTime=#{reimbursementTime},
+            ApprovalDate=#{approvalDate},
+            ApprovalTime=#{approvalTime},
+            Reasons=#{reasons}
+        where ID = #{id}
+    </update>
+    <delete id="deleteReimbursement">
+        delete
+        from sys_reimbursement
+        where ID = #{ID}
+    </delete>
+
+    <select id="findcardReimbursement" resultType="org.jeecg.modules.reimbursement.entity.Reimbursement">
+        select *
+        from sys_reimbursement
+        where (Username = #{Username} or #{Username} is null)
+    </select>
+    <select id="getMaxById" resultType="java.lang.Integer">
+        select max(ID)
+        from sys_reimbursement
+    </select>
+    <select id="listCheck" resultType="org.jeecg.modules.reimbursement.entity.Reimbursement">
+        SELECT ID, Username, Card, ReimbursementType, ReimbursementDate, ReimbursementTime, ApprovalDate, ApprovalTime,
+        Reasons,Comment, Status
+        FROM sys_reimbursement
+        <where>
+            <if test="card != null and card != '' ">
+                AND Card = #{card}
+            </if>
+            <if test="type != null and type != '' ">
+                AND ReimbursementType LIKE concat("%",#{type},"%")
+            </if>
+        </where>
+    </select>
+    <select id="getOneById" resultType="org.jeecg.modules.reimbursement.entity.Reimbursement">
+        SELECT ID,
+               Username,
+               Card,
+               ReimbursementType,
+               ReimbursementDate,
+               ReimbursementTime,
+               ApprovalDate,
+               ApprovalTime,
+               Reasons,
+               Comment,
+               Status
+        FROM sys_reimbursement
+        WHERE ID = #{id}
+    </select>
+    <update id="approvalReimbursement">
+        update sys_reimbursement
+        set ApprovalDate=#{approvalDate},
+            ApprovalTime=#{approvalTime},
+            Comment=#{comment},
+            Status=#{status}
+        where ID = #{id}
+    </update>
+</mapper>
