@@ -83,6 +83,7 @@ public class ReimbursementController {
         reimbursement.setID(IDID);
         reimbursement.setApprovalDate("  ——");
         reimbursement.setApprovalTime("  ——");
+        // 审批中
         reimbursement.setStart("1");
         reimbursementService.insertReimbursement(reimbursement);
 
